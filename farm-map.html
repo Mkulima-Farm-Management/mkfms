@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farm Map</title>
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <!-- Leaflet JavaScript -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <!-- Leaflet.draw CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-draw/dist/leaflet.draw.css" />
+    <!-- Leaflet.draw JavaScript -->
+    <script src="https://unpkg.com/leaflet-draw/dist/leaflet.draw.js"></script>
+    <!-- ESRI Leaflet JavaScript -->
+    <script src="https://unpkg.com/esri-leaflet"></script>
+    <style>
+        /* Custom CSS styles */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        * {
+            font-size: 13px;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            line-height: 1.5;
+            font-family: 'Poppins', sans-serif;
+        }
+        body {
+            background-color: whitesmoke;
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            opacity: 100%;
+            background: linear-gradient(to right, whitesmoke, whitesmoke);
+        }
+        #map {
+            height: 600px;
+        }
+        #search-container {
+            position: absolute;
+            top: 10px;
+            left: 89%;
+            transform: translateX(-50%);
+            background: rgb(255, 255, 255);
+            padding: 10px;
+            border-radius: 4px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            display: flex;
+            gap: 10px;
+        }
+        #address-input{
+            border-radius: 4px;
+            padding:5px;
+            border: 1px solid grey;
+
+        }
+        #form-container {
+            position: absolute;
+            top: 70px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            padding: 20px;
+            border-radius: 4px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            display: none;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .popup-content {
+            max-width: 300px;
+        }
+        button {
+            background-color: green;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: darkgreen;
+        }
+    </style>
+</head>
+<body>
+    <div id="search-container">
+        <input type="text" id="address-input" placeholder="Enter address" />
+        <button id="search-button">Search</button>
+    </div>
+    <div id="form-container">
+        <label for="field-name">Field Name:</label>
+        <input type="text" id="field-name" />
+        <label for="crop-type">Crop Type:</label>
+        <input type="text" id="crop-type" />
+        <label for="field-area">Area:</label>
+        <input type="text" id="field-area" />
+        
+        <button id="save-button">Save</button>
+    </div>
+    <div id="map"></div>
+
+    <script>
+        // Initialize the map
+        var map = L.map('map');
+    
+        // Use Geolocation API to get user's current location
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                var lat = position.coords.latitude;
+                var lon = position.coords.longitude;
+    
+                // Set map view to user's location
+                map.setView([lat, lon], 17); // Zoom level 17 for detailed view
+    
+                // Add ESRI World Imagery tiles as the base layer
+                var esriLayer = L.esri.basemapLayer('Imagery').addTo(map);
+    
+                // Initialize FeatureGroup to store editable layers
+                var editableLayers = new L.FeatureGroup();
+                map.addLayer(editableLayers);
+    
+                // Initialize Leaflet.draw control for drawing and editing
+                var drawControl = new L.Control.Draw({
+                    draw: {
+                        polyline: false,
+                        polygon: {
+                            allowIntersection: false,
+                            drawError: {
+                                color: '#e1e100', // Color the shape will turn when intersects
+                                message: '<strong>Oh snap!<strong> you can\'t draw that!' // Message that will show when intersect
+                            },
+                            shapeOptions: {
+                                color: '#97009c'
+                            }
+                        },
+                        circle: {
+                            shapeOptions: {
+                                color: '#fa022b'
+                            }
+                        },
+                        rectangle: {
+                            shapeOptions: {
+                                color: '#97c200'
+                            }
+                        },
+                        marker: true
+                    },
+                    edit: {
+                        featureGroup: editableLayers, // REQUIRED!!
+                        remove: true
+                    }
+                });
+                map.addControl(drawControl);
+    
+                var drawnField = null;
+    
+                // Function to create custom popups for fields
+                function createCustomPopup(feature, layer) {
+                    var popupContent = "<div class='popup-content'>" +
+                                       "<strong>Field:</strong> " + feature.properties.name + "<br>" +
+                                       "<strong>Crop:</strong> " + feature.properties.crop + "<br>" +
+                                       "<strong>Area:</strong> " + feature.properties.area + "<br>" +
+                                       "<strong>Date Created:</strong> " + feature.properties.dateCreated + "<br>" +
+                                       "<strong>Weather:</strong> " + feature.properties.weather.description + "<br>" +
+                                       "<strong>Temperature:</strong> " + feature.properties.weather.temperature + " °C" + "<br>" +
+                                       "<img src='" + feature.properties.weather.icon + "' alt='Weather Icon'>" +
+                                       "</div>";
+                    layer.bindPopup(popupContent);
+                }
+    
+                // Load fields from localStorage
+                var savedFields = JSON.parse(localStorage.getItem('fields')) || [];
+                L.geoJSON(savedFields, {
+                    onEachFeature: createCustomPopup,
+                    style: function(feature) {
+                        return {
+                            color: feature.properties.color, // Use the saved color
+                            fillColor: feature.properties.color, // Use the saved color
+                            fillColor: "#66ccff", // Fill color
+                            fillOpacity: 0.4, // Opacity of fill color
+                            weight: 2 // Border weight
+                        };
+                    }
+                }).addTo(editableLayers);
+    
+                var drawnField = null;
+    
+                map.on(L.Draw.Event.CREATED, function (event) {
+                    drawnField = event.layer;
+                    var now = new Date();
+                    drawnField.feature = {
+                        type: 'Feature',
+                        properties: {
+                            dateCreated: now.toLocaleDateString()
+                        }
+                    };
+                    editableLayers.addLayer(drawnField);
+                    document.getElementById('form-container').style.display = 'flex';
+                });
+    
+                map.on(L.Draw.Event.EDITED, function (event) {
+                    event.layers.eachLayer(function (layer) {
+                        drawnField = layer;
+                        var props = drawnField.feature ? drawnField.feature.properties : {};
+                        document.getElementById('field-name').value = props.name || '';
+                        document.getElementById('crop-type').value = props.crop || '';
+                        document.getElementById('field-area').value = props.area || '';
+                        document.getElementById('form-container').style.display = 'flex';
+                    });
+                });
+    
+                document.getElementById('save-button').addEventListener('click', function() {
+                    var name = document.getElementById('field-name').value;
+                    var crop = document.getElementById('crop-type').value;
+                    var area = document.getElementById('field-area').value;
+    
+                    if (drawnField) {
+                        drawnField.feature.properties.name = name;
+                        drawnField.feature.properties.crop = crop;
+                        drawnField.feature.properties.area = area;
+    
+                        fetchWeatherForFeature(drawnField, function(weather) {
+                            drawnField.feature.properties.weather = weather;
+    
+                            // Set style based on crop type
+                            var fillColor = '#66ccff'; // Default color
+                            if (crop === 'Wheat') {
+                                fillColor = '#ffd700'; // Wheat color
+                            } else if (crop === 'Corn') {
+                                fillColor = '#ff9900'; // Corn color
+                            } // Add more conditions as needed
+    
+                            drawnField.setStyle({
+                                color: "#336699", // Border color
+                                fillColor: fillColor,
+                                fillOpacity: 0.4, // Opacity of fill color
+                                weight: 2 // Border weight
+                            });
+    
+                            drawnField.bindPopup("<div class='popup-content'>" +
+                                "<strong>Field:</strong> " + name + "<br>" +
+                                "<strong>Crop:</strong> " + crop + "<br>" +
+                                "<strong>Area:</strong> " + area + "<br>" +
+                                "<strong>Date Created:</strong> " + drawnField.feature.properties.dateCreated + "<br>" +
+                                "<strong>Weather:</strong> " + weather.description + "<br>" +
+                                "<strong>Temperature:</strong> " + weather.temperature + " °C" + "<br>" +
+                                "<img src='" + weather.icon + "' alt='Weather Icon'>" +
+                                "</div>");
+    
+                            // Close the form container
+                            document.getElementById('form-container').style.display = 'none';
+    
+                            // Save to localStorage
+                            saveFields();
+                        });
+                    }
+                });
+    
+                function saveFields() {
+                    var fields = [];
+                    editableLayers.eachLayer(function(layer) {
+                        if (layer.feature) {
+                            fields.push(layer.feature);
+                        }
+                    });
+                    localStorage.setItem('fields', JSON.stringify(fields));
+                }
+    
+                map.on('draw:deleted', function() {
+                    saveFields();
+                });
+    
+                function fetchWeatherForFeature(feature, callback) {
+                    var bounds = feature.getBounds();
+                    var center = bounds.getCenter();
+                    fetchWeather(center.lat, center.lng, callback);
+                }
+    
+                // Function to fetch weather data from OpenWeatherMap API
+                function fetchWeather(latitude, longitude, callback) {
+                    var apiKey = '2d17480e1fe8ac83d2ff8c0f22e718b9'; // Replace with your API key
+                    var url = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=metric&appid=${apiKey}`;
+    
+                    fetch(url)
+                        .then(response => response.json())
+                        .then(data => {
+                            var weather = {
+                                description: data.weather[0].description,
+                                temperature: data.main.temp,
+                                icon: `https://openweathermap.org/img/wn/${data.weather[0].icon}.png`
+                            };
+                            callback(weather);
+                        })
+                        .catch(error => {
+                            console.error('Error fetching weather data:', error);
+                        });
+                }
+            }, function(error) {
+                console.error('Error fetching location:', error);
+                alert('Could not get your location. Please check your browser settings.');
+            });
+        } else {
+            alert('Geolocation is not supported by this browser.');
+        }
+    </script>
+    
+         
+</body>
+</html>

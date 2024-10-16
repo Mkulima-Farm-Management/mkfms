@@ -1,0 +1,72 @@
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+/* Global Styles */
+body {
+    background-color: whitesmoke;
+    font-family: 'Poppins', sans-serif;
+    padding-top: 20px;
+}
+
+* {
+    font-size: 13px;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    line-height: 1.5;
+}
+
+/* Container Style */
+.container {
+    max-width: 800px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Heading Style */
+h4 {
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+/* Form Section Style */
+.form-section {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    font-weight: 500;
+}
+
+/* Button Style */
+.btn-primary {
+    background-color: green;
+    border: none;
+    width: 100%;
+    font-size: 15px;
+    padding: 10px;
+    font-weight: 400;
+}
+
+.btn-primary:hover {
+    background-color: greenyellow;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .form-row {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .form-group {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+}

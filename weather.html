@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farm Management System - Weather</title>
+    <link rel="stylesheet" href="styles.css">
+    <script defer src="scripts.js"></script>
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #e0f7fa;
+    color: #004d40;
+}
+
+.container {
+    width: 90%;
+    margin: 0 auto;
+    max-width: 1200px;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #00796b;
+}
+
+section {
+    margin-bottom: 40px;
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    margin-top: 0;
+    color: #004d40;
+}
+
+#current-weather-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#current-weather-content img {
+    width: 100px;
+    height: 100px;
+}
+
+.weather-details {
+    margin-top: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
+.weather-details p {
+    margin: 5px 0;
+}
+
+.forecast-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+.weather-card {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    width: 200px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.weather-card img {
+    width: 50px;
+    height: 50px;
+}
+
+.weather-card h3 {
+    margin: 10px 0;
+}
+
+.weather-card p {
+    margin: 5px 0;
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Farm Weather Dashboard</h1>
+        
+        <section id="current-weather">
+            <h2>Today's Weather</h2>
+            <div id="current-weather-content">
+                <!-- Today's weather details will be injected here by JavaScript -->
+            </div>
+        </section>
+
+        <section id="hourly-forecast">
+            <h2>Hourly Forecast</h2>
+            <div id="hourly-forecast-content" class="forecast-cards">
+                <!-- Hourly forecast details will be injected here by JavaScript -->
+            </div>
+        </section>
+
+        <section id="weekly-forecast">
+            <h2>Weekly Forecast</h2>
+            <div id="weekly-forecast-content" class="forecast-cards">
+                <!-- Weekly forecast details will be injected here by JavaScript -->
+            </div>
+        </section>
+    </div>
+
+    <script>
+        const API_KEY = '2d17480e1fe8ac83d2ff8c0f22e718b9';
+
+document.addEventListener('DOMContentLoaded', function() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            position => fetchWeatherData(position.coords.latitude, position.coords.longitude),
+            error => console.error('Error getting location:', error),
+            { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
+        );
+    } else {
+        alert('Geolocation is not supported by your browser');
+    }
+});
+
+async function fetchWeatherData(latitude, longitude) {
+    try {
+        const currentWeather = await getCurrentWeather(latitude, longitude, API_KEY);
+        const weatherForecast = await getWeatherForecast(latitude, longitude, API_KEY);
+
+        displayCurrentWeather(currentWeather, weatherForecast.current);
+        displayHourlyForecast(weatherForecast.hourly);
+        displayWeeklyForecast(weatherForecast.daily);
+    } catch (error) {
+        console.error('Error fetching weather data:', error);
+    }
+}
+
+async function getCurrentWeather(lat, lon, apiKey) {
+    const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
+    const response = await fetch(url);
+    if (!response.ok) throw new Error('Failed to fetch current weather');
+    return response.json();
+}
+
+async function getWeatherForecast(lat, lon, apiKey) {
+    const url = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=minutely,alerts&appid=${apiKey}&units=metric`;
+    const response = await fetch(url);
+    if (!response.ok) throw new Error('Failed to fetch weather forecast');
+    return response.json();
+}
+
+function displayCurrentWeather(data, forecast) {
+    const weatherTodayElement = document.getElementById('current-weather-content');
+    const weatherDescription = data.weather[0].description;
+    const temperature = data.main.temp;
+    const tempMin = data.main.temp_min;
+    const tempMax = data.main.temp_max;
+    const windSpeed = data.wind.speed;
+    const humidity = data.main.humidity;
+    const dewPoint = forecast.dew_point;
+    const pressure = data.main.pressure;
+    const uvIndex = forecast.uvi;
+    const visibility = data.visibility / 1000;
+    const moonPhase = getMoonPhase(forecast.moon_phase);
+    const icon = data.weather[0].icon;
+    const chanceOfRain = forecast.pop * 100;
+
+    weatherTodayElement.innerHTML = `
+        <img src="http://openweathermap.org/img/wn/${icon}@2x.png" alt="${weatherDescription}">
+        <p>${weatherDescription.charAt(0).toUpperCase() + weatherDescription.slice(1)}</p>
+        <p>Temperature: ${temperature}°C</p>
+        <p>High/Low: ${tempMax}°C/${tempMin}°C</p>
+        <p>Chance of Rain: ${chanceOfRain}%</p>
+        <div class="weather-details">
+            <p>Wind: ${windSpeed} km/h</p>
+            <p>Humidity: ${humidity}%</p>
+            <p>Dew Point: ${dewPoint}°C</p>
+            <p>Pressure: ${pressure} mb</p>
+            <p>UV Index: ${uvIndex} of 11</p>
+            <p>Visibility: ${visibility} km</p>
+            <p>Moon Phase: ${moonPhase}</p>
+        </div>
+    `;
+}
+
+function displayHourlyForecast(data) {
+    const hourlyForecastElement = document.getElementById('hourly-forecast');
+    hourlyForecastElement.innerHTML = '';
+
+    data.slice(0, 24).forEach(hour => {
+        const time = new Date(hour.dt * 1000).getHours() + ':00';
+        const weatherDescription = hour.weather[0].description;
+        const temperature = hour.temp;
+        const icon = hour.weather[0].icon;
+        const chanceOfRain = hour.pop * 100;
+
+        const hourElement = document.createElement('div');
+        hourElement.className = 'weather-card';
+        hourElement.innerHTML = `
+            <h3>${time}</h3>
+            <img src="http://openweathermap.org/img/wn/${icon}@2x.png" alt="${weatherDescription}">
+            <p>${weatherDescription.charAt(0).toUpperCase() + weatherDescription.slice(1)}</p>
+            <p>Temp: ${temperature}°C</p>
+            <p>Rain: ${chanceOfRain}%</p>
+        `;
+
+        hourlyForecastElement.appendChild(hourElement);
+    });
+}
+
+function displayWeeklyForecast(data) {
+    const weeklyForecastElement = document.getElementById('weekly-forecast');
+    weeklyForecastElement.innerHTML = '';
+
+    data.forEach(day => {
+        const date = new Date(day.dt * 1000);
+        const weatherDescription = day.weather[0].description;
+        const tempMin = day.temp.min;
+        const tempMax = day.temp.max;
+        const icon = day.weather[0].icon;
+        const chanceOfRain = day.pop * 100;
+        const windSpeed = day.wind_speed;
+        const humidity = day.humidity;
+        const dewPoint = day.dew_point;
+        const pressure = day.pressure;
+        const uvIndex = day.uvi;
+        const visibility = day.visibility / 1000 || 'Unlimited';
+        const moonPhase = getMoonPhase(day.moon_phase);
+
+        const dayElement = document.createElement('div');
+        dayElement.className = 'weather-card';
+        dayElement.innerHTML = `
+            <h3>${date.toDateString()}</h3>
+            <img src="http://openweathermap.org/img/wn/${icon}@2x.png" alt="${weatherDescription}">
+            <p>${weatherDescription.charAt(0).toUpperCase() + weatherDescription.slice(1)}</p>
+            <p>Min: ${tempMin}°C, Max: ${tempMax}°C</p>
+            <p>Rain: ${chanceOfRain}%</p>
+            <div class="weather-details">
+                <p>Wind: ${windSpeed} km/h</p>
+                <p>Humidity: ${humidity}%</p>
+                <p>Dew Point: ${dewPoint}°C</p>
+                <p>Pressure: ${pressure} mb</p>
+                <p>UV Index: ${uvIndex} of 11</p>
+                <p>Visibility: ${visibility}</p>
+                <p>Moon Phase: ${moonPhase}</p>
+            </div>
+        `;
+
+        weeklyForecastElement.appendChild(dayElement);
+    });
+}
+
+function getMoonPhase(moonPhase) {
+    const phases = [
+        "New Moon", 
+        "Waxing Crescent", 
+        "First Quarter", 
+        "Waxing Gibbous", 
+        "Full Moon", 
+        "Waning Gibbous", 
+        "Last Quarter", 
+        "Waning Crescent"
+    ];
+    const index = Math.round(moonPhase * 8) % 8;
+    return phases[index];
+}
+
+    </script>
+</body>
+</html>

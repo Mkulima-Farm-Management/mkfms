@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Timetable Schedule</title>
+  <!-- FullCalendar CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.9.0/main.css" rel="stylesheet">
+  <!-- Moment.js for date handling -->
+  <script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/moment.min.js"></script>
+  <!-- FullCalendar JavaScript -->
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.9.0/main.js"></script>
+  <style>
+     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        body {
+            background-color: whitesmoke;
+            font-family: 'Poppins', sans-serif;
+        }
+        * {
+            font-size: 14px;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            line-height: 1.5;
+        }
+    button{
+      background-color: green;
+      padding: 8px;
+      border-radius: 3px;
+      border: none;
+      color: white;
+      margin-top: 20px;
+      margin-bottom: 20px;
+      margin-left: 0px;
+
+    }
+  </style>
+</head>
+<body>
+  <center>   <h6 style="margin-top: 20px;">ORGANIZE YOUR FARM ACTIVTIES</h6>  </center>
+
+  <button>Add  Event</button>
+  <div id='calendar'></div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+  var calendarEl = document.getElementById('calendar');
+
+  var calendar = new FullCalendar.Calendar(calendarEl, {
+    initialView: 'timeGridWeek',
+    headerToolbar: {
+      left: 'prev,next today',
+      center: 'title',
+      right: 'timeGridWeek,timeGridDay'
+    },
+    editable: true, // Enable editing (drag and drop, resize)
+    events: '/events.json', // Endpoint for fetching events (mocked JSON)
+    eventDrop: function(info) {
+      // Handle event drop
+      updateEvent(info.event);
+    },
+    eventResize: function(info) {
+      // Handle event resize
+      updateEvent(info.event);
+    }
+  });
+
+  calendar.render();
+
+  // Function to update event data (mocked JSON endpoint)
+  function updateEvent(event) {
+    // Simulate sending updated event data to the server
+    var eventData = {
+      id: event.id,
+      start: event.startStr,
+      end: event.endStr
+      // Add any other event properties you need to update
+    };
+
+    // Simulate updating the event via AJAX (replace with actual AJAX call)
+    console.log('Updating event:', eventData);
+
+    // Example of using fetch API to update the server
+    fetch('/updateEvent', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(eventData)
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log('Event updated on server:', data);
+    })
+    .catch(error => {
+      console.error('Error updating event:', error);
+    });
+  }
+});
+  </script>
+
+  
+</body>
+</html>

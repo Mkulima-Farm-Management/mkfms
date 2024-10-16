@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Management</title>
+    <link rel="stylesheet" href="styles.css"> <!-- External CSS for styling -->
+    <style>
+       
+       @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        body {
+            background-color: rgb(245, 245, 245);
+            font-family: 'Poppins', sans-serif;
+        }
+        * {
+            font-size: 14px;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            line-height: 1.5;
+        }
+
+.container {
+    max-width: 500px;
+    margin: 20px auto;
+    background-color: #f3f0f0;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #f44336;
+}
+
+.contact-form {
+    background-color: #ebeaea;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 10px;
+}
+
+
+.form-group label {
+    display: block;
+    font-weight: 100;
+    padding: 10px;
+    color: #052906;
+    opacity: 100%;
+}
+::placeholder{
+    opacity: 50%;
+
+}
+
+
+.form-group input[type="text"],
+.form-group input[type="email"], 
+ .form-group input[type="date"],
+ .form-group input[type="number"] {
+    width: calc(100% - 10px);
+    padding: 10px;
+    font-size: 13px;
+    border: 1px solid #cecdcd;
+    border-radius: 4px;
+    
+}
+
+.form-group button {
+    padding: 8px;
+    font-size: 15px;
+    cursor: pointer;
+    background-color: #4CAF50;
+    color: white;
+    width: 415px;
+    font-weight: bold;
+    border: none;
+    margin-top: 20px;
+    border-radius: 4px;
+    margin-left: 3px;
+}
+
+.form-group button#cancelEdit {
+    background-color: #f44336;
+}
+
+ul.contact-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+li.contact-item {
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+li.contact-item:hover {
+    background-color: #f0f0f0;
+}
+
+li.contact-item strong {
+    font-size: 13px;
+    color: #3842c5;
+}
+
+li.contact-item button {
+    padding: 6px 12px;
+    margin-left: 10px;
+    font-size: 14px;
+    cursor: pointer;
+    border: none;
+    border-radius: 4px;
+}
+
+
+</style>
+</head>
+<body>
+    <div class="container">
+        <center>
+            <img src="mkulima-high-resolution-logo-black-transparent.png" alt="Mkulima Logo" width="130" height="auto" style="margin-top: 10px;">
+        </center>
+        <h1>Get connected with your people</h1>
+
+        <div class="contact-form">
+            <form id="contactForm">
+                <div class="form-group">
+                    <label for="name">First Name:</label>
+                    <input type="text" id="name" name="name" placeholder="Enter your first name"  required>
+                </div>
+
+                <div class="form-group">
+                    <label for="name">Last Name:</label>
+                    <input type="text" id="name" name="name" placeholder="Enter your last name" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone:</label>
+                    <input type="number" id="phone" name="phone"placeholder="Enter your phone number" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" placeholder="Enter your email address" required>
+                </div>
+                <div class="form-group">
+                    <label for="relationship">Relationship:</label>
+                    <input type="text" id="relationship" name="relationship" placeholder="Enter the relationship" >
+                </div>
+                <div class="form-group">
+                    <label for="company">Company:</label>
+                    <input type="text" id="company" name="company" placeholder="Enter the company" >
+                </div>
+                <div class="form-group">
+                    <label for="department">Department:</label>
+                    <input type="text" id="department" name="department" placeholder="Enter the department" >
+                </div>
+                <div class="form-group">
+                    <label for="title">Title:</label>
+                    <input type="text" id="title" name="title" placeholder="Enter the title" >
+                </div>
+                <div class="form-group">
+                    <label for="birthday">Birthday:</label>
+                    <input type="date" id="birthday" name="birthday" >
+                </div>
+                <div class="form-group">
+                    <button type="submit" id="saveContact">SAVE CONTACT</button>
+                    <button type="button" id="cancelEdit" style="display: none;">Cancel</button>
+                </div>
+                <input type="hidden" id="contactId">
+            </form>
+        </div>
+
+        <ul id="contactList" class="contact-list">
+            <!-- Contact items will be dynamically added here -->
+        </ul>
+    </div>
+
+    <script src="script.js"></script> <!-- External JavaScript for functionality -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+    const contactForm = document.getElementById('contactForm');
+    const saveButton = document.getElementById('saveContact');
+    const cancelButton = document.getElementById('cancelEdit');
+    const contactList = document.getElementById('contactList');
+
+    let contacts = []; // Array to store contacts
+
+    // Function to render contacts in the list
+    function renderContacts() {
+        contactList.innerHTML = '';
+        contacts.forEach((contact, index) => {
+            const li = document.createElement('li');
+            li.classList.add('contact-item');
+            li.innerHTML = `
+                <strong>${contact.name}</strong> - ${contact.email}  -  ${contact.phone}
+                <button class="edit-btn" data-index="${index}">Edit</button>
+                <button class="delete-btn" data-index="${index}">Delete</button>
+            `;
+            contactList.appendChild(li);
+        });
+
+        // Add event listeners to edit and delete buttons
+        const editButtons = document.querySelectorAll('.edit-btn');
+        const deleteButtons = document.querySelectorAll('.delete-btn');
+
+        editButtons.forEach(button => {
+            button.addEventListener('click', handleEdit);
+        });
+
+        deleteButtons.forEach(button => {
+            button.addEventListener('click', handleDelete);
+        });
+    }
+
+    // Function to handle form submission for adding/editing contacts
+    function saveContact(event) {
+        event.preventDefault();
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email').value;
+        const phone = document.getElementById('phone').value;
+        const contactId = document.getElementById('contactId').value;
+
+
+        if (name.trim() && email.trim()) {
+            if (contactId) {
+                // Edit existing contact
+                contacts[contactId].name = name;
+                contacts[contactId].email = email;
+                contacts[contactId].phone = phone;
+
+            } else {
+                // Add new contact
+                contacts.push({ name, email, phone });
+            }
+
+            // Clear the form
+            contactForm.reset();
+            document.getElementById('contactId').value = '';
+
+            // Render updated contacts
+            renderContacts();
+        }
+    }
+
+    // Function to handle editing a contact
+    function handleEdit(event) {
+        const index = event.target.getAttribute('data-index');
+        const { name, email } = contacts[index];
+        document.getElementById('name').value = name;
+        document.getElementById('email').value = email;
+        document.getElementById('phone').value = phone;
+
+        document.getElementById('contactId').value = index;
+
+        saveButton.textContent = 'Update Contact';
+        cancelButton.style.display = 'inline';
+    }
+
+    // Function to handle deleting a contact
+    function handleDelete(event) {
+        const index = event.target.getAttribute('data-index');
+        contacts.splice(index, 1);
+        renderContacts();
+    }
+
+    // Function to cancel editing a contact
+    cancelButton.addEventListener('click', function() {
+        contactForm.reset();
+        document.getElementById('contactId').value = '';
+        saveButton.textContent = 'Save Contact';
+        cancelButton.style.display = 'none';
+    });
+
+    // Event listener for form submission
+    contactForm.addEventListener('submit', saveContact);
+
+    // Initial rendering of contacts
+    renderContacts();
+});
+    
+    </script>
+</body>
+</html>

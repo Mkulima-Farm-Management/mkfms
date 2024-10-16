@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Animal</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+       @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+body {
+    background-color: whitesmoke;
+    font-family: 'Poppins', sans-serif;
+    padding-top: 20px;
+}
+
+* {
+    font-size: 13px;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    line-height: 1.5;
+}
+
+.container {
+    max-width: 800px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h4 {
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+.form-section {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    font-weight: 500;
+}
+
+.btn-primary {
+    background-color: green;
+    border: none;
+    width: 100%;
+    font-size: 15px;
+    padding: 10px;
+    font-weight: 400;
+}
+
+.btn-primary:hover {
+    background-color: greenyellow;
+}
+
+@media (max-width: 768px) {
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .form-row {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .form-group {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h4 class="text-center">Add New Animal</h4>
+
+    <form id="livestockForm">
+        <div class="form-section">
+            <h4>General Information</h4>
+            <div class="form-group">
+                <label for="animalID">Animal ID</label>
+                <input type="text" class="form-control" id="animalID" placeholder="Enter Animal ID" required>
+            </div>
+            <div class="form-group">
+                <label for="breed">Breed</label>
+                <input type="text" class="form-control" id="breed" placeholder="Enter Breed" required>
+            </div>
+            <div class="form-group">
+                <label for="gender">Gender</label>
+                <select class="form-control" id="gender" required>
+                    <option value="">Select Gender</option>
+                    <option value="Female">Female</option>
+                    <option value="Male">Male</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="species">Species</label>
+                <input type="text" class="form-control" id="species" placeholder="Enter Species" required>
+            </div>
+            <div class="form-group">
+                <label for="color">Color</label>
+                <input type="text" class="form-control" id="color" placeholder="Enter Color" required>
+            </div>
+            <div class="form-group">
+                <label for="weight">Weight (kg)</label>
+                <input type="number" class="form-control" id="weight" placeholder="Enter Weight" required>
+            </div>
+            <div class="form-group">
+                <label for="height">Height (cm)</label>
+                <input type="number" class="form-control" id="height" placeholder="Enter Height" required>
+            </div>
+            <div class="form-group">
+                <label for="age">Age (years)</label>
+                <input type="number" class="form-control" id="age" placeholder="Enter Age" required>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h4>Status</h4>
+            <div class="form-group">
+                <label for="status">Status</label>
+                <select class="form-control" id="status" required>
+                    <option value="">Select Status</option>
+                    <option value="Active">Active</option>
+                    <option value="Archived">Archived</option>
+                    <option value="Butchered">Butchered</option>
+                    <option value="Culled">Culled</option>
+                    <option value="Deceased">Deceased</option>
+                    <option value="Dry">Dry</option>
+                    <option value="Finishing">Finishing</option>
+                    <option value="For Sale">For Sale</option>
+                    <option value="Lactating">Lactating</option>
+                    <option value="Lost">Lost</option>
+                    <option value="Off Farm">Off Farm</option>
+                    <option value="Quarantined">Quarantined</option>
+                    <option value="Reference">Reference</option>
+                    <option value="Sick">Sick</option>
+                    <option value="Sold">Sold</option>
+                    <option value="Weaning">Weaning</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h4>Breeding Information</h4>
+            <div class="form-group">
+                <label for="breedingStatus">Breeding Status</label>
+                <select class="form-control" id="breedingStatus" required>
+                    <option value="">Select Breeding Status</option>
+                    <option value="Exposed">Exposed</option>
+                    <option value="Open">Open</option>
+                    <option value="Pregnant">Pregnant</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="breedingStock">Breeding Stock</label>
+                <select class="form-control" id="breedingStock" required>
+                    <option value="">Select Breeding Stock</option>
+                    <option value="True">True</option>
+                    <option value="False">False</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="neutered">Neutered</label>
+                <select class="form-control" id="neutered" required>
+                    <option value="">Select Neutered Status</option>
+                    <option value="True">True</option>
+                    <option value="False">False</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h4>Dates</h4>
+            <div class="form-group">
+                <label for="birthDate">Birth Date</label>
+                <input type="date" class="form-control" id="birthDate" required>
+            </div>
+            <div class="form-group">
+                <label for="purchaseDate">Purchase Date</label>
+                <input type="date" class="form-control" id="purchaseDate">
+            </div>
+            <div class="form-group">
+                <label for="weanedDate">Weaned Date</label>
+                <input type="date" class="form-control" id="weanedDate">
+            </div>
+            <div class="form-group">
+                <label for="deceasedDate">Date Deceased</label>
+                <input type="date" class="form-control" id="deceasedDate">
+            </div>
+            <div class="form-group">
+                <label for="soldDate">Date Sold</label>
+                <input type="date" class="form-control" id="soldDate">
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h4>Health Information</h4>
+            <div class="form-group">
+                <label for="vaccinationStatus">Vaccination Status</label>
+                <select class="form-control" id="vaccinationStatus" required>
+                    <option value="">Select Vaccination Status</option>
+                    <option value="Up to Date">Up to Date</option>
+                    <option value="Overdue">Overdue</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="lastVetVisit">Last Vet Visit</label>
+                <input type="date" class="form-control" id="lastVetVisit">
+            </div>
+            <div class="form-group">
+                <label for="healthIssues">Health Issues</label>
+                <textarea class="form-control" id="healthIssues" rows="3" placeholder="Describe any health issues"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="medications">Medications</label>
+                <textarea class="form-control" id="medications" rows="3" placeholder="List any medications"></textarea>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h4>Ownership Information</h4>
+            <div class="form-group">
+                <label for="ownerName">Owner Name</label>
+                <input type="text" class="form-control" id="ownerName" placeholder="Enter Owner Name" required>
+            </div>
+            <div class="form-group">
+                <label for="ownerContact">Owner Contact</label>
+                <input type="text" class="form-control" id="ownerContact" placeholder="Enter Owner Contact" required>
+            </div>
+
+            <div class="form-group">
+                <label for="purchasePrice">Purchase Price</label>
+                <input type="number" step="0.01" class="form-control" id="purchasePrice" placeholder="Enter Purchase Price">
+            </div>
+        </div>
+
+        <div class="form-group text-center">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </form>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#livestockForm').on('submit', function(e) {
+            e.preventDefault();
+            // Gather form data
+            let animalID = $('#animalID').val();
+            let breed = $('#breed').val();
+            let gender = $('#gender').val();
+            let status = $('#status').val();
+            let breedingStatus = $('#breedingStatus').val();
+            let breedingStock = $('#breedingStock').val();
+
+            // Example of further processing
+            console.log(`Animal ID: ${animalID}`);
+            console.log(`Breed: ${breed}`);
+            console.log(`Gender: ${gender}`);
+            console.log(`Status: ${status}`);
+            console.log(`Breeding Status: ${breedingStatus}`);
+            console.log(`Breeding Stock: ${breedingStock}`);
+
+            // Here you can add AJAX call or further processing as needed
+
+            // Example alert for demonstration
+            alert('Form submitted successfully!');
+        });
+    });
+</script>
+<script>
+    $(document).ready(function() {
+        $('#livestockForm').on('submit', function(e) {
+            e.preventDefault();
+
+            // Validate form fields
+            if (!validateForm()) {
+                return;
+            }
+
+            // Gather form data
+            let formData = {
+                animalID: $('#animalID').val(),
+                breed: $('#breed').val(),
+                gender: $('#gender').val(),
+                status: $('#status').val(),
+                breedingStatus: $('#breedingStatus').val(),
+                breedingStock: $('#breedingStock').val()
+            };
+
+            // Example of further processing (AJAX submission)
+            $.ajax({
+                url: 'your-backend-api-endpoint', // Replace with your actual backend endpoint
+                method: 'POST',
+                data: formData,
+                success: function(response) {
+                    console.log('Form submission successful');
+                    alert('Animal added successfully!');
+                    // Optionally reset the form
+                    $('#livestockForm')[0].reset();
+                },
+                error: function(xhr, status, error) {
+                    console.error('Form submission error:', error);
+                    alert('Error adding animal. Please try again later.');
+                }
+            });
+        });
+
+        // Form validation function
+        function validateForm() {
+            let valid = true;
+
+            // Validate each input field
+            $('#livestockForm input, #livestockForm select').each(function() {
+                if (!$(this).val()) {
+                    valid = false;
+                    $(this).addClass('is-invalid');
+                } else {
+                    $(this).removeClass('is-invalid');
+                }
+            });
+
+            return valid;
+        }
+    });
+</script>
+<!-- Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+ <!-- Bootstrap JS and dependencies -->
+ <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+ <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+ <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</body>
+</html>
+           

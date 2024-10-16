@@ -1,0 +1,264 @@
+<link rel="preconnect" href="https://fonts.gstatic.com">
+    <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.js" defer></script>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Spartan:wght@600&display=swap" rel="stylesheet">
+
+<head>
+
+    <style>
+         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        body {
+            background-color: whitesmoke;
+            font-family: 'Quicksand', sans-serif;
+
+        }
+        * {
+            font-size: 13px;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            line-height: 1.5;
+        }
+
+.contacts-section {
+    padding: 20px;
+    background-color: #f9f9f9; /* Light background for the section */
+}
+
+.contact-header {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Center the header text */
+    margin-bottom: 20px; /* Space between the header and the contact items */
+}
+
+.contact-container {
+    display: flex;
+    flex-direction: row; /* Arrange items horizontally */
+    justify-content: space-between; /* Distribute items evenly along the main axis */
+    flex-wrap: wrap; /* Allow items to wrap to the next line if needed */
+    gap: 20px; /* Gap between each section */
+    align-items: stretch; /* Ensure items stretch to the same height */
+    margin-top: 50px;
+
+}
+
+.contact-item {
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    flex: 1; /* Each section takes equal space */
+    min-width: 250px; /* Ensure a minimum width for each section */
+    background-color: #fff; /* Background color for the sections */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Space out the content inside each item */
+}
+
+/* Ensure links are styled consistently */
+.contact-item a {
+    color: #007bff; /* Adjust link color as needed */
+    text-decoration: none;
+}
+h6{
+    font-size: 14px;
+}
+
+/* Hover effect for links */
+.contact-item a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive Design: Stack sections vertically on smaller screens */
+@media (max-width: 768px) {
+    .contact-container {
+        flex-direction: column; /* Stack items vertically on smaller screens */
+        align-items: stretch; /* Stretch items to fill container width */
+    }
+}
+
+.footer {
+    background-color:whitesmoke;
+    padding: 0px 50px;
+    text-align: center;
+    bottom: 0;
+    font-size: 14px;
+    font-family: 'Quicksand', sans-serif;
+    margin-top:100px;
+
+    
+ 
+    
+}
+h6{
+  padding-left: 10px;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.footer-links {
+    display: inline-block;
+    margin: 0 50px;
+    line-height: 32px;
+    text-align: left;
+    
+    
+
+}
+
+.footer-links ul {
+    list-style-type: none;
+    padding: 10px;
+    
+}
+
+.footer-links ul li {
+    margin-bottom: 20px;
+    
+   
+}
+svg:hover {
+  transform: translate(0%, -50%);
+  transition: color 2s ease, transform 2s ease; /* Apply a 2-second transition to color and transform */
+  cursor: pointer;
+
+    
+}
+.social-list li {
+   
+    margin-right: 15px; /* Adjust this value to increase/decrease the space */
+}
+
+.social-list li svg {
+    vertical-align: middle; /* Aligns the SVG vertically with the text */
+    margin-right: 5px; /* Adjust this value to add space between SVG and text */
+}
+a{
+    font-size: 13px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 100;
+    color:black;
+    text-decoration: none;
+    
+
+}
+a:hover{
+  color: #16aa43;
+  text-decoration: none;
+   
+
+}
+.col-md-6{
+    background-color: whitesmoke;
+    font-size: 13px;
+    font-style: normal;
+    width: 100%;
+    margin-top: 10px;
+    font-weight: 100;
+}
+
+    </style>
+</head>
+
+<!-- Assuming this is part of your homepage.html -->
+<section id="contacts" class="contacts-section" >
+    <div class="contact-header" >
+        <h5 style="margin-top: 50px;">CONTACT US</h5> <br>
+        
+    </div>
+    <p style="text-align: center; font-weight: 600;">Have a question, need some help, or just want to say Hi? </p>
+    <div class="contact-container">
+        <div class="contact-item">
+            <h6>Main Office</h6>
+            <p>123 Main Street, Nairobi, Kenya</p>
+            <p>Phone: <a href="tel:+1234567890">+123 456 7890</a></p>
+            <p>Email: <a href="mailto:info@mkulimafarm.com">info@mkulimafarm.com</a></p>
+        </div>
+        
+        <div class="contact-item">
+            <h6 >Location</h6>
+            <p>123 Main Street, Nairobi, Kenya</p>
+            <p>Map: <a href="https://maps.google.com">View on Google Maps</a></p>
+        </div>
+        
+        <div class="contact-item">
+            <h6>Customer Support</h6>
+            <p>Phone: <a href="tel:+1234567891">+123 456 7891</a></p>
+            <p>Email: <a href="mailto:support@mkulimafarm.com">support@mkulimafarm.com</a></p>
+        </div>
+        
+        <div class="contact-item">
+            <h6>Sales Inquiries</h6>
+            <p>Phone: <a href="tel:+1234567892">+123 456 7892</a></p>
+            <p>Email: <a href="mailto:sales@mkulimafarm.com">sales@mkulimafarm.com</a></p>
+        </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-links">
+        <h6>ABOUT US</h6>
+        <ul>
+            <li><a href="#">Our Story</a></li>
+            <li><a href="#">Mission & Vision</a></li>
+            <li><a href="team.html">Team</a></li>
+        </ul>
+    </div>
+
+    <div class="footer-links">
+        <h6>PRODUCTS</h6>
+        <ul>
+            <li><a href="#">Farm Advisory</a></li>
+            <li><a href="#">Farm Insights</a></li>
+            <li><a href="#">Farm Enterprise</a></li>
+        </ul>
+    </div>
+
+    <div class="footer-links">
+        <h6>CONTACTS</h6>
+        <ul>
+            <li><a href="contact us.html">Contact Us</a></li>
+            <li><a href="contact us.html">Location</a></li>
+            <li><a href="contact us.html">Support</a></li>
+        </ul>
+    </div>
+
+    <div class="footer-links">
+        <h6>HELP</h6>
+        <ul>
+            <li><a href="#">FAQs</a></li>
+            <li><a href="#">Customer Support</a></li>
+            <li><a href="#">Feedback</a></li>
+        </ul>
+    </div>
+ 
+    <div class="footer-links">
+      <h6>CONNECT WITH US</h6>
+      <ul class="social-list">
+          <li><a href="#"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="blue" class="bi bi-facebook" viewBox="0 0 16 16">
+            <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951"/>
+          </svg> <span>Facebook</span> </a></li>
+          <li><a href="#"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="green" class="bi bi-whatsapp" viewBox="0 0 16 16">
+            <path d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232"/>
+          </svg><span>Whatsapp</span></a></li>
+          <li><a href="#"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="bi bi-twitter-x" viewBox="0 0 16 16">
+            <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865z"/>
+          </svg><span>Twitter</span> </a></li>
+          
+      </ul>
+  </div>
+
+
+   
+
+
+<!-- Translation Element -->
+<div   id="google_translate_element"></div>
+<!-- Your website content goes here -->
+
+<center><p class="col-md-6">&copy; 2024 mfms.com.All rights reserved.</p></center> 
+
+
+
+</footer>
